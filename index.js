@@ -38,7 +38,17 @@ server.get('/api/users/:id', (req, res) => {
    .catch(error => res.send(error))
 })
 
+//delete user by id
 
+server.delete('/api/users/:id', (req, res) => {
+    db.remove(req.params.id)
+    .then(
+        r => res.send(r)
+    )
+    .catch(
+        error => res.json({'error' : 'could not delete user'})
+    )
+})
 
 
 server.listen(5000, () =>
