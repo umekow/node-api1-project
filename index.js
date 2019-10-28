@@ -1,1 +1,46 @@
 // implement your API here
+const http = require('http'); 
+const express = require('express'); 
+
+const port = 5000; 
+
+const server = express(); 
+
+const db = require('./data/db.js'); 
+
+
+//create new user
+
+server.post('/api/users', (req, res)=> {
+   db.insert({name: "Umeko", bio: "Web23 Student and..."})
+   .then(r => res.send(r))
+   .catch(error => res.send(error)); 
+
+})
+
+//returns an array of all users in db
+
+server.get('/api/users', (req, res) => {
+   db.find()
+   .then( r => {
+      res.send(r)
+   })
+   .catch(error => res.json({'error' : 'Tbh...Idk what happened but some kind of error occured!'}))
+})
+
+//get user by id 
+
+server.get('/api/users/:id', (req, res) => {
+   db.findById(req.params.id)
+   .then(
+      r => res.send(r)
+   )
+   .catch(error => res.send(error))
+})
+
+
+
+
+server.listen(5000, () =>
+  console.log('Server running on http://localhost:5000')
+);
