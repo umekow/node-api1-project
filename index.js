@@ -8,13 +8,14 @@ const server = express();
 
 const db = require('./data/db.js'); 
 
+server.use(express.json())
 
 //create new user
 
 server.post('/api/users', (req, res)=> {
-   db.insert({name: "Umeko", bio: "Web23 Student and..."})
+   db.insert(req.body)
    .then(r => res.send(r))
-   .catch(error => res.send(error)); 
+   .catch(error => res.json(error)); 
 
 })
 
@@ -25,7 +26,7 @@ server.get('/api/users', (req, res) => {
    .then( r => {
       res.send(r)
    })
-   .catch(error => res.json({'error' : 'Tbh...Idk what happened but some kind of error occured!'}))
+   .catch(error => res.send('Tbh...Idk what happened but some kind of error occured!'))
 })
 
 //get user by id 
@@ -48,6 +49,15 @@ server.delete('/api/users/:id', (req, res) => {
     .catch(
         error => res.json({'error' : 'could not delete user'})
     )
+})
+
+//update user
+server.put('/api/users/:id', (req, res) => {
+  //code
+  db.update(req.params.id, req.body)
+    .then(
+        r => res.json(r)
+    ).catch(error => console.log(error))
 })
 
 
